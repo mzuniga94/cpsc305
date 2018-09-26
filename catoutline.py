@@ -63,23 +63,45 @@ thomas.forward(140)
 
 #left eye
 thomas.penup()
-thomas.right(300)
+thomas.setheading(45)
 thomas.forward(80)
 thomas.pendown()
 thomas.circle(25)
 
 #right eye
 thomas.penup()
-thomas.right(-300)
-thomas.forward(80)
+thomas.setheading(0) # sets the direction of the turtle object
+thomas.forward(90)
 thomas.pendown()
 thomas.circle(25)
 
 #nose
 thomas.penup()
-thomas.right(120)
+thomas.setheading(210)
 thomas.forward(60)
+thomas.setheading(180)
 thomas.pendown()
-thomas.right(60)
+thomas.forward(20)
+thomas.setheading(300)
+thomas.forward(15)
+thomas.setheading(45)
+thomas.forward(15)
+thomas.setheading(210)
+thomas.penup()
+thomas.forward(10)
+thomas.setheading(270)
+thomas.forward(10)
+
+#mouth
+thomas.pendown()
+thomas.forward(25)
+thomas.setheading(210)
+thomas.forward(25)
+thomas.setheading(30)
+thomas.penup()
+thomas.forward(25)
+thomas.pendown()
+thomas.setheading(330)
+thomas.forward(35)
 
 wn.exitonclick()
