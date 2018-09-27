@@ -8,7 +8,7 @@ def draw_mosaic():
     turt = turtle.Turtle()
 
     # speed up the turtle, otherwise this takes way too long
-    turt.speed(1000)
+    turt.speed(10000)
 
     # 4 corners
     # top-left
@@ -55,15 +55,32 @@ def tile_y(row):
 # Draw a corner tile at the given row, column, x-coordinate, and y-coordinate.
 def draw_corner(turt, row, col, x, y):
     # you need to rewrite this function
+    # draw_corner(turt, 0, 0, tile_x(0), tile_y(0))
+    turt.penup()
     turt.setpos(x, y)
+    turt.pendown()
+    turt.circle(10)
 
 # Draw a border tile at the given row, column, x-coordinate, and y-coordinate.
 def draw_border_tile(turt, row, col, x, y):
+    turt.penup()
     turt.setpos(x, y)
+    turt.pendown()
+    turt.circle(20)
 
 # Draw an inset tile at the given row, column, x-coordinate, and y-coordinate.
 def draw_inset_tile(turt, row, col, x, y):
+    turt.penup()
     turt.setpos(x, y)
+    turt.pendown()
+    turt.setheading(45)
+    turt.forward(40)
+    turt.setheading(135)
+    turt.forward(40)
+    turt.setheading(225)
+    turt.forward(40)
+    turt.setheading(315)
+    turt.forward(40)
 
 # Draw the centerpiece at the given x-coordinate and y-coordinate. This is
 # done by drawing the same shape 36 times, overlapping, each draw separated
@@ -79,6 +96,7 @@ def draw_centerpiece_stencil(turt, x, y, angle):
     turt.setheading(angle)
     turt.forward(100)
     turt.backward(100)
+    turt.circle(500)
 
 turtle.setup(800, 800)
 wn = turtle.Screen()
