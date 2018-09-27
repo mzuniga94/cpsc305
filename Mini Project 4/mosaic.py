@@ -8,7 +8,7 @@ def draw_mosaic():
     turt = turtle.Turtle()
 
     # speed up the turtle, otherwise this takes way too long
-    turt.speed(10)
+    turt.speed(1000)
 
     # 4 corners
     # top-left
@@ -38,7 +38,7 @@ def draw_mosaic():
     for row in range(1, 19):
         for col in range(1, 19):
             draw_inset_tile(turt, row, col, tile_x(col), tile_y(row))
-    
+
     # centerpiece
     draw_centerpiece(turt, 0, 0)
 
