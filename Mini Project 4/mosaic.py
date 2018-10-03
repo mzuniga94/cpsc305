@@ -1,6 +1,8 @@
 import turtle
 import random
 
+colors = ["red", "pink", "blue", "orange", "purple", "green", "yellow", "black", "brown"]
+
 # Draw an entire mosaic.
 def draw_mosaic():
     # you should be able to leave this function unchanged
@@ -55,18 +57,25 @@ def tile_y(row):
 # Draw a corner tile at the given row, column, x-coordinate, and y-coordinate.
 def draw_corner(turt, row, col, x, y):
     # you need to rewrite this function
-    # draw_corner(turt, 0, 0, tile_x(0), tile_y(0))
     turt.penup()
-    turt.color(0.7, 0, 0.6)
+    #turt.color(0.7, 0, 0.6)
     turt.setpos(x, y)
     turt.pendown()
     turt.setheading(45)
     for loop in range(4):
+        color = random.choice(colors)
+        turt.color(color)
+        turt.begin_fill()
         turt.circle(25,90)
+        turt.end_fill()
+        turt.color(color)
+        turt.begin_fill()
         turt.circle(25,90)
+        turt.end_fill()
         turt.left(90)
 
 # Draw a border tile at the given row, column, x-coordinate, and y-coordinate.
+# Draw border flower shape with random color fills.
 def draw_border_tile(turt, row, col, x, y):
     turt.penup()
     turt.pencolor(0.1, 0.6, 0.1)
@@ -74,16 +83,26 @@ def draw_border_tile(turt, row, col, x, y):
     turt.pendown()
     turt.setheading(90)
     for i in range(4):
+        color = random.choice(colors)
+        turt.color(color)
+        turt.begin_fill()
         turt.circle(12,90)
+        turt.end_fill()
+        turt.color(color)
+        turt.begin_fill()
         turt.circle(12,90)
         turt.left(90)
+        turt.end_fill()
+
 
 # Draw an inset tile at the given row, column, x-coordinate, and y-coordinate.
+# Draw diamond shape with color fill.
 def draw_inset_tile(turt, row, col, x, y):
     turt.penup()
-    turt.pencolor("black")
+    color = random.choice(colors)
     turt.setpos(x, y)
     turt.pendown()
+    turt.color(color)
     turt.begin_fill()
     turt.setheading(45)
     turt.forward(40)
@@ -93,6 +112,7 @@ def draw_inset_tile(turt, row, col, x, y):
     turt.forward(40)
     turt.setheading(315)
     turt.forward(40)
+    turt.end_fill()
 
 # Draw the centerpiece at the given x-coordinate and y-coordinate. This is
 # done by drawing the same shape 36 times, overlapping, each draw separated
@@ -103,13 +123,13 @@ def draw_centerpiece(turt, x, y):
 
 # Draw a shape in the centerpiece, starting at the given x-coordinate and
 # y-coordinate, and rotated by angle degrees.
-# Draws diamonds for the tiles
+# Draws giant circles for flower shape.
 def draw_centerpiece_stencil(turt, x, y, angle):
     turt.setpos(x, y)
     turt.setheading(angle)
     turt.forward(100)
     turt.backward(100)
-    turt.circle(500)
+    turt.circle(150)
 
 turtle.setup(800, 800)
 wn = turtle.Screen()
