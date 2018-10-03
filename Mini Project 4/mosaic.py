@@ -1,5 +1,5 @@
-
 import turtle
+import random
 
 # Draw an entire mosaic.
 def draw_mosaic():
@@ -8,7 +8,7 @@ def draw_mosaic():
     turt = turtle.Turtle()
 
     # speed up the turtle, otherwise this takes way too long
-    turt.speed(10000)
+    turt.speed(100)
 
     # 4 corners
     # top-left
@@ -57,29 +57,31 @@ def draw_corner(turt, row, col, x, y):
     # you need to rewrite this function
     # draw_corner(turt, 0, 0, tile_x(0), tile_y(0))
     turt.penup()
-    turt.pencolor(1, 0, 0.5)
+    turt.color(0.7, 0, 0.6)
     turt.setpos(x, y)
     turt.pendown()
     turt.setheading(45)
-    turt.color((1,0,0.5))
     for loop in range(4):
-        turt.circle(20,90)
-        turt.circle(20,90)
+        turt.circle(25,90)
+        turt.circle(25,90)
         turt.left(90)
 
 # Draw a border tile at the given row, column, x-coordinate, and y-coordinate.
 def draw_border_tile(turt, row, col, x, y):
     turt.penup()
+    turt.pencolor(0.1, 0.6, 0.1)
     turt.setpos(x, y)
     turt.pendown()
     turt.setheading(90)
     for i in range(4):
-        turt.circle(10,90)
-        turt.circle(10,90)
+        turt.circle(12,90)
+        turt.circle(12,90)
         turt.left(90)
+
 # Draw an inset tile at the given row, column, x-coordinate, and y-coordinate.
 def draw_inset_tile(turt, row, col, x, y):
     turt.penup()
+    turt.pencolor("black")
     turt.setpos(x, y)
     turt.pendown()
     turt.begin_fill()
