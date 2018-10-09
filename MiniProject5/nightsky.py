@@ -1,5 +1,6 @@
 import random
 import turtle
+import math
 
 # This function draws the entire night sky using turtle turt.
 def draw_sky(turt):
@@ -20,10 +21,16 @@ def draw_sky(turt):
         # TODO: now use if statement(s) on percent, to decide whether to
         if percent <= 40:
             blue_star(turt, x, y)
-        elif percent >= 55 and percent <= 75:
+            print(percent)
+        elif percent >= 55 and percent < 75:
             red_star(turt, x, y)
-        elif percent >= 75:
+            print(percent)
+        elif percent >= 75 and percent < 90:
             big_star(turt, x, y)
+            print(percent)
+        elif percent >= 90 and percent <= 99:
+            draw_embellishment(turt, x, y)
+            print(percent)
 
 # Draw a small blue star at x, y, using turt.
 def blue_star(turt, x, y):
@@ -59,7 +66,13 @@ def draw_embellishment(turt, x, y):
     turt.penup()
     turt.goto(x, y)
     turt.pendown()
-    turt.circle(25)
+    turt.color("blue")
+    for i in range(3):
+        turt.forward(15)
+        turt.setheading(math.sin(90))
+        turt.forward(15)
+        turt.setheading(math.sin(90))
+        turt.circle(25)
 
 turtle.setup(800, 800)
 
