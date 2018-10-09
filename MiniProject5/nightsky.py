@@ -15,11 +15,12 @@ def draw_sky(turt):
 
         # choose random star type; first generate an integer between
         # 0 and 99 inclusive
-        #percent = random.randrange(0, 100)
-        percent = 1
+        percent = random.randrange(0, 99)
         # TODO: now use if statement(s) on percent, to decide whether to
-        if percent == 1:
+        if percent <= 75:
             blue_star(turt, x, y)
+        elif percent >= 75:
+            draw_embellishment(turt, x, y)
         # call blue_star, red_star, or big_star
 
 # Draw a small blue star at x, y, using turt.
@@ -37,13 +38,31 @@ def blue_star(turt, x, y):
 # Draw a medium-sized red star at x, y using turt.
 def red_star(turt, x, y):
     turt.goto(x, y)
+    turt.penup()
+    turt.goto(x, y)
+    turt.pendown()
+    turt.color(0, 0, random.uniform(0.5, 1)) #TODO: Please change this to red!
+    turt.circle(5)
     # TODO: add statements to pick a random red-white color, and random
     # radius, and then draw a dot using that color and radius
 
 # Draw a large four-pointed star at x, y using turt.
 def big_star(turt, x, y):
     turt.goto(x, y)
+    turt.penup()
+    turt.goto(x, y)
+    turt.pendown()
+    turt.color(0, 0, random.uniform(0.5, 1)) #TODO: Please change this to white color!
+    turt.circle(5)
     # TODO: add statements to draw a four-pointed white star
+
+# Draw some kind of swirly
+def draw_embellishment(turt, x, y):
+    turt.goto(x, y)
+    turt.penup()
+    turt.goto(x, y)
+    turt.pendown()
+    turt.circle(25)
 
 turtle.setup(800, 800)
 
