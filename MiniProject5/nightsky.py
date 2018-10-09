@@ -15,11 +15,14 @@ def draw_sky(turt):
 
         # choose random star type; first generate an integer between
         # 0 and 99 inclusive
-        #percent = random.randrange(0, 100)
-        percent = 1
+        percent = random.randrange(0, 100)
         # TODO: now use if statement(s) on percent, to decide whether to
-        if percent == 1:
+        if percent <= 40:
             blue_star(turt, x, y)
+        elif percent >= 55:
+            red_star(turt, x, y)
+        else:
+            big_star(turt, x, y)
         # call blue_star, red_star, or big_star
 
 # Draw a small blue star at x, y, using turt.
@@ -27,16 +30,19 @@ def blue_star(turt, x, y):
     turt.penup()
     turt.goto(x, y)
     turt.pendown()
-    turt.color(0, 0, random.uniform(0.5, 1))
-    turt.circle(5)
-    #turt.color(random.uniform(0.9, 1.0),random.uniform(0.7, 1.0), 1)
-
+    turt.color(random.uniform(0.71, 1), random.uniform(0.87, 1), 1)
+    turt.circle(random.uniform(0.5, 3))
     # TODO: add statements to pick a random blue-white color, and random
     # radius, and then draw a dot using that color and radius
 
 # Draw a medium-sized red star at x, y using turt.
 def red_star(turt, x, y):
+    turt.penup()
     turt.goto(x, y)
+    turt.pendown()
+    turt.color(1, random.uniform(0.67, 1), random.uniform(0.70, 1))
+    turt.circle(random.uniform(0.5, 3))
+
     # TODO: add statements to pick a random red-white color, and random
     # radius, and then draw a dot using that color and radius
 
