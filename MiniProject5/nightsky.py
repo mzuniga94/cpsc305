@@ -1,3 +1,5 @@
+#Programmers: Oli Patane, Matthew Zuniga
+
 import random
 import turtle
 
@@ -20,10 +22,11 @@ def draw_sky(turt):
         # TODO: now use if statement(s) on percent, to decide whether to
         if percent <= 40:
             blue_star(turt, x, y)
-        elif percent >= 55 and percent <= 88:
+        elif percent >= 55 and percent < 88:
             red_star(turt, x, y)
         elif percent >= 88:
             big_star(turt, x, y)
+
 
 # Draw a small blue star at x, y, using turt.
 def blue_star(turt, x, y):
@@ -34,7 +37,7 @@ def blue_star(turt, x, y):
     turt.begin_fill()
     turt.circle(random.uniform(0.1, 2))
     turt.end_fill()
-       
+
 # Draw a medium-sized red star at x, y using turt.
 def red_star(turt, x, y):
     turt.penup()
@@ -75,13 +78,113 @@ def big_star(turt, x, y):
     turt.forward(15)
     turt.end_fill()
 
-# Draw some kind of swirly
-def draw_embellishment(turt, x, y):
-    turt.goto(x, y)
-    turt.penup()
-    turt.goto(x, y)
-    turt.pendown()
+# Draw yellow moon and city skyline
+def draw_embellishment(turt):
+    turt.goto(-300, 300)
+    turt.color("yellow")
+    turt.begin_fill()
     turt.circle(25)
+    turt.end_fill()
+    turt.penup()
+    turt.color("white")
+    turt.pendown()
+    turt.penup()
+    turt.goto(-400, -400)
+    turt.pendown()
+
+    #Begin drawing cityline
+    #Begin building 2
+    turt.begin_fill()
+    turt.forward(25)
+    turt.setheading(90)
+    turt.forward(75)
+    turt.setheading(0)
+    turt.forward(50)
+    turt.setheading(270)
+    turt.forward(35)
+
+    #Begin building 2
+    turt.setheading(0)
+    turt.forward(50)
+    turt.setheading(90)
+    turt.forward(75)
+    turt.setheading(0)
+    turt.forward(25)
+    turt.setheading(45)
+    turt.forward(25)
+    turt.setheading(90)
+    turt.forward(20)
+    turt.setheading(0)
+    turt.forward(20)
+    turt.setheading(270)
+    turt.forward(20)
+    turt.setheading(315)
+    turt.forward(20)
+    turt.setheading(0)
+    turt.forward(25)
+
+    #Begin building 3
+    turt.setheading(270)
+    turt.forward(75)
+    turt.setheading(0)
+    turt.forward(50)
+    turt.setheading(90)
+    turt.forward(50)
+    turt.setheading(0)
+    turt.forward(25)
+    turt.setheading(270)
+    turt.forward(50)
+
+    #Begin building 4
+    turt.setheading(0)
+    turt.forward(25)
+    turt.setheading(45)
+    turt.forward(50)
+    turt.setheading(0)
+    turt.forward(25)
+    turt.setheading(90)
+    turt.forward(25)
+    turt.setheading(0)
+    turt.forward(10)
+    turt.setheading(270)
+    turt.forward(25)
+    turt.setheading(315)
+    turt.forward(50)
+
+    #Begin building 5
+    for i in range(1, 5):
+        turt.setheading(0)
+        turt.forward(25)
+        turt.setheading(90)
+        turt.forward(25)
+    turt.setheading(90)
+    turt.forward(25)
+    turt.setheading(0)
+    turt.forward(25)
+    turt.setheading(270)
+    turt.forward(25)
+    for i in range(1, 5):
+        turt.setheading(0)
+        turt.forward(25)
+        turt.setheading(270)
+        turt.forward(25)
+
+    #Begin building 6
+    turt.setheading(0)
+    turt.forward(25)
+    turt.setheading(90)
+    turt.forward(50)
+    turt.setheading(0)
+    turt.forward(50)
+    turt.setheading(270)
+    turt.forward(50)
+
+    #Begin building 7
+    turt.setheading(45)
+    turt.forward(50)
+    turt.setheading(315)
+    turt.forward(50)
+    turt.end_fill()
 
 turtle.setup(800, 800)
 
@@ -90,5 +193,7 @@ turtle.bgcolor((0, 0, .1))
 
 wn = turtle.Screen()
 turt = turtle.Turtle()
+# Call draw_embellishment first so you don't have to see all the stars generate
+draw_embellishment(turt)
 draw_sky(turt)
 wn.exitonclick()
