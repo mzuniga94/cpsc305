@@ -54,11 +54,11 @@ def applyRules(ch):
         newstr ='X'
     elif ch == '3': 
         newstr = 'XF'
-    elif ch == 'X':
-        newstr = 'X[+X][<<<+X][>>>+X]'   # Rule 1
     elif ch == 'F':
-        newstr = 'F[+F][<<<<+F][>>>>+F]'  # Rule 2
-    elif ch == 'XF'
+        newstr = 'F[+F][<<<<+F][>>>>+F]' # Rule 1
+    elif ch == 'X':
+        newstr = 'X[+X][<<<+X][>>>+X]'  # Rule 2
+    elif ch == 'XF':
         newstr = 'XF[+XF][<<<<+XF][>>>>+XF]'
     else:
         newstr = ch    # no rules apply so keep the character
@@ -69,6 +69,12 @@ def drawLsystem(instructions, angle, distance):
     info_list = []
     for cmd in instructions:
         if cmd == 'F':
+            cyl = cmds.cylinder(r=0.1, ax=[0,1,0], hr=1/0.1*distance)
+            cyl = cmds.parent( cyl[0], parent, r=1)
+            cmds.move(0, (distance/2.0), 0, cyl[0], os=1) 
+            parent = cmds.createNode("transform", p=parent)
+            cmds.move(0, (distance), 0, parent, os=1)
+        elif cmd == 'X':
             cyl = cmds.cylinder(r=0.1, ax=[0,1,0], hr=1/0.1*distance)
             cyl = cmds.parent( cyl[0], parent, r=1)
             cmds.move(0, (distance/2.0), 0, cyl[0], os=1) 
@@ -94,9 +100,9 @@ def generate_call_back(*args):
        # Get axiom value.
         axiomValue=cmds.optionMenu('Axiom_OptionMenu', query=True, value=True)
         numIters=iterSlider.getValue()
-        print(axiomValue)
-        print(numIters)
+        a = int(numIters)
+        print (a)
+        drawLsystem(createLSystem(a, axiomValue), 30, 1)
                                  
-            
-drawLsystem(createLSystem(numIters, axiomValue),30,1)
+generateTreeButton = button(label='generate', height=200, command=generate_call_back)          
 win.show()
