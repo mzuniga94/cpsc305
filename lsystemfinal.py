@@ -22,28 +22,10 @@ cmds.frameLayout(label='Axiom')
 # Create an option menu.
 # TODO: Learn how to GET values from options.
 # Get item from menuItem as Axiom in our L-system.
-cmds.optionMenu('Axiom_OptionMenu', label='')
-menuItem(label='Axiom1')
-menuItem(label='Axiom2')
-menuItem(label='Axiom3')
-
-cmds.optionMenu(label='Rule')
-menuItem(label='Rule1')
-menuItem(label='Rule2')
-menuItem(label='Rule3')
-
-cmds.optionMenu(label='Color')
-menuItem(label='Red')
-menuItem(label='Blue')
-menuItem(label='Yellow')
-
-# Testing for whether it gets the value from the option menu.
-def axiomTestCallback(*args):
-    axiomValue=cmds.optionMenu('Axiom_OptionMenu', query=True, value=True)
-    print(axiomValue)
-    
-testButton = button(label='Print Axiom Test to screen', height=200, command=axiomTestCallback)
-
+cmds.optionMenu('Axiom_OptionMenu', label='Axiom')
+menuItem(label='1')
+menuItem(label='2')
+menuItem(label='3')
 
 # Set the number of iterations.
 iterSlider = intSliderGrp(l = "Number of Iterations", min=1, max=5, field=True)
@@ -66,10 +48,18 @@ def processString(oldStr):
     
 def applyRules(ch):
     newstr = ""
-    if ch == 'X':
-        newstr = 'F+[[X]-X]-F[-FX]+X'   # Rule 1
+    if ch == '1':
+        newstr = 'F'
+    elif ch == '2':
+        newstr ='X'
+    elif ch == '3': 
+        newstr = 'XF'
+    elif ch == 'X':
+        newstr = 'X[+X][<<<+X][>>>+X]'   # Rule 1
     elif ch == 'F':
-        newstr = 'FF'  # Rule 2
+        newstr = 'F[+F][<<<<+F][>>>>+F]'  # Rule 2
+    elif ch == 'XF'
+        newstr = 'XF[+XF][<<<<+XF][>>>>+XF]'
     else:
         newstr = ch    # no rules apply so keep the character
     return newstr
@@ -87,14 +77,26 @@ def drawLsystem(instructions, angle, distance):
         elif cmd == '+':
             parent = cmds.createNode("transform", p=parent)
             cmds.rotate(-angle, 0, 0, parent, os=1)
-        elif cmd == '-':
+        elif cmd == '>':
             parent = cmds.createNode("transform", p=parent)
-            cmds.rotate(angle, 0, 0, parent, os=1)
+            cmds.rotate(0, -angle, 0, parent, os=1)
+        elif cmd == '<':
+            parent = cmds.createNode("transform", p=parent)
+            cmds.rotate(0, angle, 0, parent, os=1)   
         elif cmd == '[':
             info_list.append(parent)
         elif cmd == ']':
             new_info = info_list.pop() #<- might not need this, we will see
             parent = saved.pop()
 
-drawLsystem(createLSystem(iterSlider, ""),30,1)
+# Create generate callback button.
+def generate_call_back(*args):
+       # Get axiom value.
+        axiomValue=cmds.optionMenu('Axiom_OptionMenu', query=True, value=True)
+        numIters=iterSlider.getValue()
+        print(axiomValue)
+        print(numIters)
+                                 
+            
+drawLsystem(createLSystem(numIters, axiomValue),30,1)
 win.show()
