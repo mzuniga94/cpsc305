@@ -46,7 +46,7 @@ testButton = button(label='Print Axiom Test to screen', height=200, command=axio
 
 
 # Set the number of iterations.
-iterSlider = intSliderGrp(l = "Number of Iterations", min=0, max=10, field=True)
+iterSlider = intSliderGrp(l = "Number of Iterations", min=1, max=5, field=True)
 
 # Create axioms.
 def createLSystem(numIters, axiom):
@@ -96,4 +96,5 @@ def drawLsystem(instructions, angle, distance):
             new_info = info_list.pop() #<- might not need this, we will see
             parent = saved.pop()
 
+drawLsystem(createLSystem(iterSlider, ""),30,1)
 win.show()
