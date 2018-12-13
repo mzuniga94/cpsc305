@@ -12,7 +12,7 @@ if maya.cmds.window(window_name, exists=True):
 win = window(window_name, title='L-System Tree')
 
 # Changes windo dimensions of window_name to widthHeight.
-cmds.windowPref(window_name, widthHeight=(800, 800) )
+cmds.windowPref(window_name, widthHeight=(200, 200) )
 
 layout = columnLayout(adjustableColumn=True)
 
@@ -50,21 +50,21 @@ angleSlider = intSliderGrp(l="Angle", min=30, max=60, field=True)
 lengthSlider = intSliderGrp(l="Length", min=1, max=5, field=True)
 generateButton = button(label='Generate', height=200, command=generate_call_back)
 
-def applyRules(lhch):
-    rhstr = ""
-    if lhch == 'F':
-        rhstr = 'F[+F][<<<<+F][>>>>+F]'
+def applyRules(ch):
+    ruleStr = ""
+    if ch == 'F':
+        ruleStr = 'F[+F][<<<<+F][>>>>+F]'
+    elif ch == 'X':
+        ruleStr = 'X[+X][<<<+X][>>>+X]'
     else:
-        rhstr = lhch
-    return rhstr
-
+        ruleStr = ch
+    return ruleStr
 
 def processString(oldStr):
-    newstr = ""
-    for ch in oldStr:
-        newstr = newstr + applyRules(ch)
-    return newstr
-
+    newStr = ""
+    for i in oldStr:
+        newStr = newStr + applyRules(i)
+    return newStr
 
 def createLSystem(numIters, axiom):
     startString = axiom
@@ -77,28 +77,34 @@ def createLSystem(numIters, axiom):
 def drawLsystem(instructions, angle, distance):
     parent = cmds.createNode("transform", n="L_Root_#")
     saved=[]
-    for act in instructions:
-        if act == 'F':
+    for part in instructions:
+        if part == 'F':
            cyl = cmds.cylinder(r=0.1, ax=[0,1,0], hr=1/0.1*distance)
-           cyl = cmds.parent( cyl[0], parent, r=1)
+           cyl = cmds.parent(cyl[0], parent, r=1)
            cmds.move(0, (distance/2.0), 0, cyl[0], os=1) 
            parent = cmds.createNode("transform", p=parent)
            cmds.move(0, (distance), 0, parent, os=1) 
-        if act == '-':
+        if part == 'X':
+           cyl = cmds.cylinder(r=0.1, ax=[0,1,0], hr=1/0.1*distance)
+           cyl = cmds.parent(cyl[0], parent, r=1)
+           cmds.move(0, (distance/2.0), 0, cyl[0], os=1)
+           parent = cmds.createNode("transform", p=parent)
+           cmds.move(0, (distance), 0, parent, os=1)
+        if part == '-':
            parent = cmds.createNode("transform", p=parent)
            cmds.rotate(angle, 0, 0, parent, os=1) 
-        if act == '+':
+        if part == '+':
            parent = cmds.createNode("transform", p=parent)
            cmds.rotate(-angle, 0, 0, parent, os=1) 
-        if act == '<':
+        if part == '<':
            parent = cmds.createNode("transform", p=parent)
            cmds.rotate(0, angle, 0, parent, os=1) 
-        if act == '>':
+        if part == '>':
            parent = cmds.createNode("transform", p=parent)
            cmds.rotate(0, -angle, 0, parent, os=1) 
-        if act == '[':
+        if part == '[':
            saved.append(parent)
-        if act == ']':
+        if part == ']':
            parent = saved.pop()  
 
 win.show() 
