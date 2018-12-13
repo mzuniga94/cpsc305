@@ -16,93 +16,89 @@ cmds.windowPref(window_name, widthHeight=(800, 800) )
 
 layout = columnLayout(adjustableColumn=True)
 
-generateTreeButton = button(label='Generate!', height=200)
-cmds.frameLayout(label='Axiom')
+# Gets the value of the int slider.
+def getSliderValue():
+    value = iterationSlider.getValue()
+    return value
 
-# Create an option menu.
-# TODO: Learn how to GET values from options.
-# Get item from menuItem as Axiom in our L-system.
+# Gets the axiom from the axiom drop down.  
+def getAxiom():
+    axiomValue = cmds.optionMenu('Axiom_OptionMenu', query=True, value=True)
+    return axiomValue
+
+# Get the angle of the tree branches.
+def getAngle():
+    angle = angleSlider.getValue()
+    return angle
+
+def getLength():
+    length = lengthSlider.getValue()
+    return length
+    
+# Calls and generates the tree by calling drawLSystem and getting values from sliders and drop downs.    
+def generate_call_back(*args):
+    drawLsystem(createLSystem(getSliderValue(), getAxiom()), getAngle(), getLength())    
+
+# TODO: Add more axioms here if needed.
 cmds.optionMenu('Axiom_OptionMenu', label='Axiom')
-menuItem(label='1')
-menuItem(label='2')
-menuItem(label='3')
+menuItem(label='F')
+menuItem(label='X')
 
-# Set the number of iterations.
-iterSlider = intSliderGrp(l = "Number of Iterations", min=1, max=5, field=True)
+# UI Elements  
+iterationSlider = intSliderGrp(l="Number of Iterations", min=1, max=5, field=True)
+angleSlider = intSliderGrp(l="Angle", min=30, max=60, field=True)
+lengthSlider = intSliderGrp(l="Length", min=1, max=5, field=True)
+generateButton = button(label='Generate', height=200, command=generate_call_back)
 
-# Create axioms.
+def applyRules(lhch):
+    rhstr = ""
+    if lhch == 'F':
+        rhstr = 'F[+F][<<<<+F][>>>>+F]'
+    else:
+        rhstr = lhch
+    return rhstr
+
+
+def processString(oldStr):
+    newstr = ""
+    for ch in oldStr:
+        newstr = newstr + applyRules(ch)
+    return newstr
+
+
 def createLSystem(numIters, axiom):
     startString = axiom
-    endString = " "
+    endString = ""
     for i in range(numIters):
-        endstring = processString(startString)
+        endString = processString(startString)
         startString = endString
     return endString
 
-# Create rules for L-system.
-def processString(oldStr):
-    newStr = " "
-    for ch in oldStr:
-        newStr = newStr + applyRules(ch)
-    return newStr
-    
-def applyRules(ch):
-    newstr = ""
-    if ch == '1':
-        newstr = 'F'
-    elif ch == '2':
-        newstr ='X'
-    elif ch == '3': 
-        newstr = 'XF'
-    elif ch == 'F':
-        newstr = 'F[+F][<<<<+F][>>>>+F]' # Rule 1
-    elif ch == 'X':
-        newstr = 'X[+X][<<<+X][>>>+X]'  # Rule 2
-    elif ch == 'XF':
-        newstr = 'XF[+XF][<<<<+XF][>>>>+XF]'
-    else:
-        newstr = ch    # no rules apply so keep the character
-    return newstr
-    
 def drawLsystem(instructions, angle, distance):
-    parent = maya.cmds.createNode("transform", n="L_Root_#")
-    info_list = []
-    for cmd in instructions:
-        if cmd == 'F':
-            cyl = cmds.cylinder(r=0.1, ax=[0,1,0], hr=1/0.1*distance)
-            cyl = cmds.parent( cyl[0], parent, r=1)
-            cmds.move(0, (distance/2.0), 0, cyl[0], os=1) 
-            parent = cmds.createNode("transform", p=parent)
-            cmds.move(0, (distance), 0, parent, os=1)
-        elif cmd == 'X':
-            cyl = cmds.cylinder(r=0.1, ax=[0,1,0], hr=1/0.1*distance)
-            cyl = cmds.parent( cyl[0], parent, r=1)
-            cmds.move(0, (distance/2.0), 0, cyl[0], os=1) 
-            parent = cmds.createNode("transform", p=parent)
-            cmds.move(0, (distance), 0, parent, os=1)
-        elif cmd == '+':
-            parent = cmds.createNode("transform", p=parent)
-            cmds.rotate(-angle, 0, 0, parent, os=1)
-        elif cmd == '>':
-            parent = cmds.createNode("transform", p=parent)
-            cmds.rotate(0, -angle, 0, parent, os=1)
-        elif cmd == '<':
-            parent = cmds.createNode("transform", p=parent)
-            cmds.rotate(0, angle, 0, parent, os=1)   
-        elif cmd == '[':
-            info_list.append(parent)
-        elif cmd == ']':
-            new_info = info_list.pop() #<- might not need this, we will see
-            parent = saved.pop()
+    parent = cmds.createNode("transform", n="L_Root_#")
+    saved=[]
+    for act in instructions:
+        if act == 'F':
+           cyl = cmds.cylinder(r=0.1, ax=[0,1,0], hr=1/0.1*distance)
+           cyl = cmds.parent( cyl[0], parent, r=1)
+           cmds.move(0, (distance/2.0), 0, cyl[0], os=1) 
+           parent = cmds.createNode("transform", p=parent)
+           cmds.move(0, (distance), 0, parent, os=1) 
+        if act == '-':
+           parent = cmds.createNode("transform", p=parent)
+           cmds.rotate(angle, 0, 0, parent, os=1) 
+        if act == '+':
+           parent = cmds.createNode("transform", p=parent)
+           cmds.rotate(-angle, 0, 0, parent, os=1) 
+        if act == '<':
+           parent = cmds.createNode("transform", p=parent)
+           cmds.rotate(0, angle, 0, parent, os=1) 
+        if act == '>':
+           parent = cmds.createNode("transform", p=parent)
+           cmds.rotate(0, -angle, 0, parent, os=1) 
+        if act == '[':
+           saved.append(parent)
+        if act == ']':
+           parent = saved.pop()  
 
-# Create generate callback button.
-def generate_call_back(*args):
-       # Get axiom value.
-        axiomValue=cmds.optionMenu('Axiom_OptionMenu', query=True, value=True)
-        numIters=iterSlider.getValue()
-        a = int(numIters)
-        print (a)
-        drawLsystem(createLSystem(a, axiomValue), 30, 1)
-                                 
-generateTreeButton = button(label='generate', height=200, command=generate_call_back)          
-win.show()
+win.show() 
